@@ -105,33 +105,33 @@ goal = Cell.new(r1,c1)
 level = 0
 adj[root] = level
 
+follow_path = -> cell, row, col do
+  neighbor = Cell.new(row, col)
+  break false if adj.key?(neighbor) || visited.key?(neighbor)
+
+  queue << neighbor
+  adj[neighbor] = adj[cell] + 1
+
+  true
+end
+
 queue << root
 while queue.any?
   cell = queue.shift
   break if cell.eql? goal
   visited[cell] = true
 
-  follow_path = -> row, col do
-    neighbor = Cell.new(row, col)
-    break false if adj.key?(neighbor) || visited.key?(neighbor)
-
-    queue << neighbor
-    adj[neighbor] = adj[cell] + 1
-
-    true
-  end
-
   (cell.row-1).downto(0) do |row|
-    break unless follow_path.call(row, cell.col)
+    break unless follow_path.call(cell, row, cell.col)
   end
   (cell.col+1).upto(Cell.size-1) do |col|
-    break unless follow_path.call(cell.row, col)
+    break unless follow_path.call(cell, cell.row, col)
   end
   (cell.row+1).upto(Cell.size-1) do |row|
-    break unless follow_path.call(row, cell.col)
+    break unless follow_path.call(cell, row, cell.col)
   end
   (cell.col-1).downto(0) do |col|
-    break unless follow_path.call(cell.row, col)
+    break unless follow_path.call(cell, cell.row, col)
   end
 
   level += 1
