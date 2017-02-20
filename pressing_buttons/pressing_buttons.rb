@@ -1,3 +1,5 @@
+# O(n choose k)
+
 def pressing_buttons(buttons)
   return [] if buttons.empty?
 
